@@ -1,8 +1,20 @@
+/*
+ * @Author: lijunwei
+ * @Date: 2022-01-07 11:56:37
+ * @LastEditTime: 2022-01-07 16:27:16
+ * @LastEditors: lijunwei
+ * @Description: 
+ */
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+
+
+import '@shopify/polaris/build/esm/styles.css';
+
+
 
 ReactDOM.render(
   <React.StrictMode>
