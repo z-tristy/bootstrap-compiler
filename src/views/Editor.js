@@ -1,68 +1,108 @@
 /*
  * @Author: lijunwei
  * @Date: 2022-01-07 15:10:15
- * @LastEditTime: 2022-01-10 16:49:08
+ * @LastEditTime: 2022-01-17 20:02:11
  * @LastEditors: lijunwei
  * @Description: 
  */
 
-import { Button, ButtonGroup, TextField } from "@shopify/polaris";
-// import axios from "axios";
+import { Form, TextField } from "@shopify/polaris";
+import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 // import { io } from "socket.io-client";
+
 
 
 
 function Editor(props) {
 
   const [socket, setSocket] = useState(null);
-  const [color, setColor] = useState("green");
+  const [color, setColor] = useState("");
+
+  let [searchParams] = useSearchParams();
+
+
+  const [code, setCode] = useState(searchParams.get("code"));
+  const [token, setToken] = useState("");
+
+
   useEffect(() => {
+    const payload = {
+      client_id: "b523ef94f70673c1ce904310d923918d",
+      client_secret: "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",
+      code,
+    }
 
-    // axios.get("http://192.168.8.55:8001/bootit")
-    //   .then(res => {
-    //     console.dir(res);
-    //   })
+    axios.post("http://192.168.8.55:8001/access_token",
+    payload)
+    .then(r=>{
+      console.log(r.data);
+      const {access_token} = r.data;
+      setToken(access_token);
+    })
+  },[])
 
 
+  useEffect(() => {
     const ws = new WebSocket("ws://192.168.8.55:8001");
 
-    ws.onopen = (e)=>{
-      console.log("socket opened");
+    ws.onopen = (e) => {
+      // console.log("socket opened");
     }
-  
-    ws.onmessage = (e)=>{
+
+    ws.onmessage = (e) => {
       console.log(e.data);
     }
 
     setSocket(ws);
-
   }, [])
 
   const ioChangeColor = useCallback(
     () => {
       if (!socket) return;
-      socket.send(JSON.stringify({colorChange: color}));
+      socket.send(JSON.stringify({ colorChange: color }));
     },
     [color, socket],
   );
 
 
   return (
-    <div style={{ width: "300px", margin: "0px auto",padding: "300px 0" }}>
+    <div style={{ width: "100%", height: "100%", display: "flex", flexDirection: "column" }}>
+      {/* <a href={`https://fastlane-sections.myshopify.com/admin/oauth/authorize?client_id=b523ef94f70673c1ce904310d923918d&scope=write_products,write_customers,write_draft_orders&redirect_uri=http://192.168.8.55:3010&state=${new Date().getTime()}`}>New Code Link</a> */}
+      <div style={{ width: "300px", margin: "0px auto" }}>
+        <Form
 
-        <TextField 
-          value={ color }
-          onChange={ val=>setColor(val) }
-        />
-        <br></br>
+          onSubmit={ioChangeColor}
+        >
+          <br />
+          <TextField
+            value={color}
+            label="Input a color and press ENTER. e.g. #333, red"
+            onChange={val => setColor(val)}
+          />
 
-        <Button
+          {/* <Button
           fullWidth
           primary
           onClick={ ioChangeColor }
-        >Submit</Button>
-        
+        >Submit</Button> */}
+        </Form>
+      </div>
+
+      <div style={{ flex: 1, position: "relative", padding: "20px" }}>
+      {
+        true && 
+        <iframe
+          title="server"
+          style={{ border: "none" }}
+          height="100%"
+          width="100%"
+          src={`http://192.168.8.55:8001`}
+        />
+      }
+      </div>
+
     </div>
   );
 }

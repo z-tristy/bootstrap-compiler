@@ -1,7 +1,7 @@
 /*
  * @Author: lijunwei
  * @Date: 2021-11-15 17:24:19
- * @LastEditTime: 2022-01-07 15:10:36
+ * @LastEditTime: 2022-01-14 11:28:39
  * @LastEditors: lijunwei
  * @Description: 
  */
@@ -10,6 +10,7 @@ import { AppProvider, Frame } from "@shopify/polaris";
 import logo from "./logo.svg"
 import en from '@shopify/polaris/locales/en.json';
 import { Editor } from "./views/Editor";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 
 
@@ -30,7 +31,12 @@ function App() {
       i18n={en}
       theme={theme}
     >
-        <Editor />
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={ <Editor /> }></Route>
+          </Routes>
+        </BrowserRouter>
+        
     </AppProvider>
 
   );
