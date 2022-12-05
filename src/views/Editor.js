@@ -27,26 +27,26 @@ function Editor(props) {
   const [token, setToken] = useState("");
 
 
+  // useEffect(() => {
+  //   const payload = {
+  //     client_id: "b523ef94f70673c1ce904310d923918d",
+  //     client_secret: "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",
+  //     code,
+  //   }
+
+  //   axios.post("http://192.168.8.55:8001/access_token",
+  //   payload)
+  //   .then(r=>{
+  //     console.log(r.data);
+  //     const {access_token} = r.data;
+  //     setToken(access_token);
+  //   })
+  // },[])
+
+
   useEffect(() => {
-    const payload = {
-      client_id: "b523ef94f70673c1ce904310d923918d",
-      client_secret: "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",
-      code,
-    }
-
-    axios.post("http://192.168.8.55:8001/access_token",
-    payload)
-    .then(r=>{
-      console.log(r.data);
-      const {access_token} = r.data;
-      setToken(access_token);
-    })
-  },[])
-
-
-  useEffect(() => {
-    const ws = new WebSocket("ws://192.168.8.55:8001");
-
+    const ws = new WebSocket("ws://192.168.10.3:8001");
+    // http://192.168.10.3:8001/
     ws.onopen = (e) => {
       // console.log("socket opened");
     }
@@ -98,7 +98,7 @@ function Editor(props) {
           style={{ border: "none" }}
           height="100%"
           width="100%"
-          src={`http://192.168.8.55:8001`}
+          src={`http://192.168.10.3:8001/`}
         />
       }
       </div>
