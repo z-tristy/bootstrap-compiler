@@ -90,7 +90,7 @@ function Editor(props) {
         </Form>
       </div>
 
-      <div style={{ flex: 1, position: "relative", padding: "20px" }}>
+      {/* <div style={{ flex: 1, position: "relative", padding: "20px" }}>
       {
         true && 
         <iframe
@@ -101,7 +101,7 @@ function Editor(props) {
           src={`http://192.168.10.3:8001/`}
         />
       }
-      </div>
+      </div> */}
 
     </div>
   );
