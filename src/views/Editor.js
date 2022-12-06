@@ -44,19 +44,19 @@ function Editor(props) {
   // },[])
 
 
-  useEffect(() => {
-    const ws = new WebSocket("ws://192.168.10.3:8001");
-    // http://192.168.10.3:8001/
-    ws.onopen = (e) => {
-      // console.log("socket opened");
-    }
+  // useEffect(() => {
+  //   const ws = new WebSocket("ws://192.168.10.3:8001");
+  //   // http://192.168.10.3:8001/
+  //   ws.onopen = (e) => {
+  //     // console.log("socket opened");
+  //   }
 
-    ws.onmessage = (e) => {
-      console.log(e.data);
-    }
+  //   ws.onmessage = (e) => {
+  //     console.log(e.data);
+  //   }
 
-    setSocket(ws);
-  }, [])
+  //   setSocket(ws);
+  // }, [])
 
   const ioChangeColor = useCallback(
     () => {
