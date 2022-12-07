@@ -97,7 +97,7 @@ function Editor(props) {
           title="server"
           style={{ border: "none" }}
           height="100%"
-          width="100%"
+          width="100%" 
           src={`https://staging-preview-z-tristy.vercel.app/api/`}
         />
       }
