@@ -98,7 +98,7 @@ function Editor(props) {
           style={{ border: "none" }}
           height="100%"
           width="100%" 
-          src={`https://fastlane-bootstrap-compiler.vercel.app/`}
+          src={`https://staging-preview.vercel.app/`}
         />
       }
       </div>
