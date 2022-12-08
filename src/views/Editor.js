@@ -12,9 +12,6 @@ import { useCallback, useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 // import { io } from "socket.io-client";
 
-
-
-
 function Editor(props) {
 
   const [socket, setSocket] = useState(null);
@@ -46,6 +43,7 @@ function Editor(props) {
 
   useEffect(() => {
     const ws = new WebSocket("ws://staging-preview.vercel.app/");
+    // const ws = new WebSocket("ws://192.168.10.3:8002/");
     // http://192.168.10.3:8001/
     ws.onopen = (e) => {
       console.log("socket opened");
@@ -98,7 +96,8 @@ function Editor(props) {
           style={{ border: "none" }}
           height="100%"
           width="100%" 
-          src={`https://staging-preview.vercel.app/`}
+          // src={`http://192.168.10.3:8002/`}
+          src={`ws://staging-preview.vercel.app/`}
         />
       }
       </div>
