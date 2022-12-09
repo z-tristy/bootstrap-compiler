@@ -7,42 +7,15 @@
  */
 
 import { Form, TextField } from "@shopify/polaris";
-import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
-// import { io } from "socket.io-client";
 
 function Editor(props) {
 
   const [socket, setSocket] = useState(null);
   const [color, setColor] = useState("");
 
-  let [searchParams] = useSearchParams();
-
-
-  const [code, setCode] = useState(searchParams.get("code"));
-  const [token, setToken] = useState("");
-
-
-  // useEffect(() => {
-  //   const payload = {
-  //     client_id: "b523ef94f70673c1ce904310d923918d",
-  //     client_secret: "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",
-  //     code,
-  //   }
-
-  //   axios.post("http://192.168.8.55:8001/access_token",
-  //   payload)
-  //   .then(r=>{
-  //     console.log(r.data);
-  //     const {access_token} = r.data;
-  //     setToken(access_token);
-  //   })
-  // },[])
-
-
   useEffect(() => {
-    const ws = new WebSocket("wss://staging-preview.vercel.app");
+    const ws = new WebSocket("wss://echo.websocket.org");
     // const ws = new WebSocket("ws://192.168.10.3:8002/");
     // http://192.168.10.3:8001/
     ws.onopen = (e) => {
