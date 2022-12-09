@@ -14,7 +14,7 @@ function Editor(props) {
   const [socket, setSocket] = useState(null);
   const [color, setColor] = useState("");
 
-  const ws = new WebSocket("wss://echo.websocket.org");
+  const ws = new WebSocket("wss://staging-preview.vercel.app");
   ws.onopen = (e) => {
     console.log("socket opened");
   }
