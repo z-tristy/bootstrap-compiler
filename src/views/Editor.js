@@ -42,7 +42,7 @@ function Editor(props) {
 
 
   useEffect(() => {
-    const ws = new WebSocket("wss://staging-preview.vercel.app:443");
+    const ws = new WebSocket("wss://staging-preview.vercel.app");
     // const ws = new WebSocket("ws://192.168.10.3:8002/");
     // http://192.168.10.3:8001/
     ws.onopen = (e) => {
