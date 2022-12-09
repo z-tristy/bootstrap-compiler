@@ -88,7 +88,7 @@ function Editor(props) {
         </Form>
       </div>
 
-      <div style={{ flex: 1, position: "relative", padding: "20px" }}>
+      {/* <div style={{ flex: 1, position: "relative", padding: "20px" }}>
       {
         true && 
         <iframe
@@ -100,7 +100,7 @@ function Editor(props) {
           src={`https://staging-preview.vercel.app`}
         />
       }
-      </div>
+      </div> */}
 
     </div>
   );
