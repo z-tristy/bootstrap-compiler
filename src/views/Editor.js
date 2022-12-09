@@ -29,6 +29,9 @@ function Editor(props) {
 
     setSocket(ws);
     console.log(ws)
+    setTimeout(function(){
+      console.log(ws.readyState)  
+    }, 2000)
   }, [])
 
   const ioChangeColor = useCallback(
