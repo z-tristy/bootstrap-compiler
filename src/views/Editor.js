@@ -97,7 +97,7 @@ function Editor(props) {
           height="100%"
           width="100%" 
           // src={`http://192.168.10.3:8002/`}
-          src={`wss://staging-preview.vercel.app/`}
+          src={`https://staging-preview.vercel.app/`}
         />
       }
       </div>
