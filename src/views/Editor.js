@@ -29,7 +29,7 @@ function Editor(props) {
 
     setSocket(ws);
     console.log(ws)
-    setTimeout(function(){
+    setInterval(function(){
       console.log(ws.readyState)  
     }, 2000)
   }, [])
