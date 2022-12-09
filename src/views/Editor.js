@@ -14,25 +14,38 @@ function Editor(props) {
   const [socket, setSocket] = useState(null);
   const [color, setColor] = useState("");
 
-  useEffect(() => {
-    const ws = new WebSocket("wss://echo.websocket.org");
-    // console.log(ws)
-    // const ws = new WebSocket("ws://192.168.10.3:8002/");
-    // http://192.168.10.3:8001/
-    ws.onopen = (e) => {
-      console.log("socket opened");
-    }
+  const ws = new WebSocket("wss://echo.websocket.org");
+  ws.onopen = (e) => {
+    console.log("socket opened");
+  }
 
-    ws.onmessage = (e) => {
-      console.log(e.data);
-    }
+  ws.onmessage = (e) => {
+    console.log(e.data);
+  }
 
-    setSocket(ws);
-    console.log(ws)
-    setInterval(function(){
-      console.log(ws.readyState)  
-    }, 2000)
-  }, [])
+  setSocket(ws);
+  console.log(ws)
+  setInterval(function(){
+    console.log(ws.readyState)  
+  }, 2000)
+  // useEffect(() => {
+  //   // console.log(ws)
+  //   // const ws = new WebSocket("ws://192.168.10.3:8002/");
+  //   // http://192.168.10.3:8001/
+  //   ws.onopen = (e) => {
+  //     console.log("socket opened");
+  //   }
+
+  //   ws.onmessage = (e) => {
+  //     console.log(e.data);
+  //   }
+
+  //   setSocket(ws);
+  //   console.log(ws)
+  //   setInterval(function(){
+  //     console.log(ws.readyState)  
+  //   }, 2000)
+  // }, [])
 
   const ioChangeColor = useCallback(
     () => {
