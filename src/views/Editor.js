@@ -42,9 +42,7 @@ function Editor(props) {
 
     setSocket(ws);
     console.log(ws)
-    setInterval(function(){
-      console.log(ws.readyState)  
-    }, 2000)
+    console.log(ws.readyState)
   }, [])
 
   const ioChangeColor = useCallback(
