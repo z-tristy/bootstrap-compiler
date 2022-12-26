@@ -32,7 +32,6 @@ function Editor(props) {
     // console.log(ws)
     // const ws = new WebSocket("ws://192.168.10.3:8002/");
     const ws = new WebSocket("wss://staging-preview.vercel.app");
-    // http://192.168.10.3:8001/
     ws.onopen = (e) => {
       console.log("socket opened");
     }
@@ -80,7 +79,7 @@ function Editor(props) {
         </Form>
       </div>
 
-      {/* <div style={{ flex: 1, position: "relative", padding: "20px" }}>
+      <div style={{ flex: 1, position: "relative", padding: "20px" }}>
       {
         true && 
         <iframe
@@ -92,7 +91,7 @@ function Editor(props) {
           src={`https://staging-preview.vercel.app`}
         />
       }
-      </div> */}
+      </div>
 
     </div>
   );
