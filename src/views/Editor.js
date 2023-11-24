@@ -42,25 +42,26 @@ function Editor(props) {
   //     setToken(access_token);
   //   })
   // },[])
+  
 
+  useEffect(() => {
+    const ws = new WebSocket("wss:///express-dev.vercel.app:4000");
+    console.log(ws)
+    ws.onopen = (e) => {
+      console.log("socket opened");
+    }
 
-  // useEffect(() => {
-  //   const ws = new WebSocket("ws://192.168.10.3:8001");
-  //   // http://192.168.10.3:8001/
-  //   ws.onopen = (e) => {
-  //     // console.log("socket opened");
-  //   }
+    ws.onmessage = (e) => {
+      console.log(e.data);
+    }
 
-  //   ws.onmessage = (e) => {
-  //     console.log(e.data);
-  //   }
-
-  //   setSocket(ws);
-  // }, [])
+    setSocket(ws);
+  }, [])
 
   const ioChangeColor = useCallback(
     () => {
       if (!socket) return;
+      console.log(2)
       socket.send(JSON.stringify({ colorChange: color }));
     },
     [color, socket],
@@ -90,18 +91,18 @@ function Editor(props) {
         </Form>
       </div>
 
-      {/* <div style={{ flex: 1, position: "relative", padding: "20px" }}>
+      <div style={{ flex: 1, position: "relative", padding: "20px" }}>
       {
-        true && 
+        false && 
         <iframe
           title="server"
           style={{ border: "none" }}
           height="100%"
           width="100%"
-          src={`http://192.168.10.3:8001/`}
+          src={`https://express-dev.vercel.app/`}
         />
       }
-      </div> */}
+      </div>
 
     </div>
   );
