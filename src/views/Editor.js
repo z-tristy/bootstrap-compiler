@@ -45,7 +45,7 @@ function Editor(props) {
   
 
   useEffect(() => {
-    const ws = new WebSocket("wss:///express-dev.vercel.app:4000");
+    const ws = new WebSocket("ws://192.168.11.113:8002/");
     console.log(ws)
     ws.onopen = (e) => {
       console.log("socket opened");
@@ -53,6 +53,7 @@ function Editor(props) {
 
     ws.onmessage = (e) => {
       console.log(e.data);
+      console.log('客户端 接受 message');
     }
 
     setSocket(ws);
@@ -93,13 +94,13 @@ function Editor(props) {
 
       <div style={{ flex: 1, position: "relative", padding: "20px" }}>
       {
-        false && 
+        true && 
         <iframe
           title="server"
           style={{ border: "none" }}
           height="100%"
           width="100%"
-          src={`https://express-dev.vercel.app/`}
+          src={`http://192.168.11.113:8002/`}
         />
       }
       </div>
