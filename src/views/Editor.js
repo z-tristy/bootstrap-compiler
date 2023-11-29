@@ -94,7 +94,7 @@ function Editor(props) {
 
       <div style={{ flex: 1, position: "relative", padding: "20px" }}>
       {
-        true && 
+        false && 
         <iframe
           title="server"
           style={{ border: "none" }}
