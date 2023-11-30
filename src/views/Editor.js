@@ -37,8 +37,10 @@ function Editor(props) {
     [color, socket],
   );
 
-  const handleColorUpdate = e => {
-    setColor({...color, [e.target.name]: e.target.value})
+  const handleColorUpdate = (value, name) => {
+    console.log(value)
+    console.log(name)
+    setColor({...color, [name]: value})
   }
 
 
@@ -54,35 +56,35 @@ function Editor(props) {
             value={color.primary}
             name='primary'
             label="Primary"
-            onChange={ handleColorUpdate }
+            onChange={ e => handleColorUpdate(e, 'primary') }
           />
           <br />
           <TextField
             value={color.secondary}
             name="secondary"
             label="Secondary"
-            onChange={ handleColorUpdate }
+            onChange={ e => handleColorUpdate(e, 'secondary') }
           />
           <br />
           <TextField
             value={color.inverse}
             name="inverse"
             label="inverse"
-            onChange={ handleColorUpdate }
+            onChange={ e => handleColorUpdate(e, 'inverse') }
           />
           <br />
           <TextField
             value={color.white}
             name="white"
             label="white"
-            onChange={ handleColorUpdate }
+            onChange={ e => handleColorUpdate(e, 'white') }
           />
           <br />
           <TextField
             value={color.black}
             name="black"
             label="black"
-            onChange={ handleColorUpdate }
+            onChange={ e => handleColorUpdate(e, 'age') }
           />
 
           {/* <Button
