@@ -1,48 +1,17 @@
-/*
- * @Author: lijunwei
- * @Date: 2022-01-07 15:10:15
- * @LastEditTime: 2022-01-17 20:02:11
- * @LastEditors: lijunwei
- * @Description: 
- */
 
 import { Form, TextField } from "@shopify/polaris";
-import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
-// import { io } from "socket.io-client";
-
-
-
 
 function Editor(props) {
 
   const [socket, setSocket] = useState(null);
-  const [color, setColor] = useState("");
-
-  let [searchParams] = useSearchParams();
-
-
-  const [code, setCode] = useState(searchParams.get("code"));
-  const [token, setToken] = useState("");
-
-
-  // useEffect(() => {
-  //   const payload = {
-  //     client_id: "b523ef94f70673c1ce904310d923918d",
-  //     client_secret: "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",
-  //     code,
-  //   }
-
-  //   axios.post("http://192.168.8.55:8001/access_token",
-  //   payload)
-  //   .then(r=>{
-  //     console.log(r.data);
-  //     const {access_token} = r.data;
-  //     setToken(access_token);
-  //   })
-  // },[])
-  
+  const [color, setColor] = useState({
+    primary: '#F20000',
+    secondary: '#747475',
+    inverse: '#F7F7F7',
+    white: '#ffffff',
+    black: '#000000'
+  });
 
   useEffect(() => {
     const ws = new WebSocket("wss://nodejs-production-89c8.up.railway.app/");
@@ -59,7 +28,7 @@ function Editor(props) {
     setSocket(ws);
   }, [])
 
-  const ioChangeColor = useCallback(
+  const updateData = useCallback(
     () => {
       if (!socket) return;
       console.log(2)
@@ -68,20 +37,52 @@ function Editor(props) {
     [color, socket],
   );
 
+  const handleColorUpdate = e => {
+    setColor({...color, [e.target.name]: e.target.value})
+  }
+
 
   return (
     <div style={{ width: "100%", height: "100%", display: "flex", flexDirection: "column" }}>
       {/* <a href={`https://fastlane-sections.myshopify.com/admin/oauth/authorize?client_id=b523ef94f70673c1ce904310d923918d&scope=write_products,write_customers,write_draft_orders&redirect_uri=http://192.168.8.55:3010&state=${new Date().getTime()}`}>New Code Link</a> */}
       <div style={{ width: "300px", margin: "0px auto" }}>
         <Form
-
-          onSubmit={ioChangeColor}
+          onSubmit={updateData}
         >
           <br />
           <TextField
-            value={color}
-            label="Input a color and press ENTER. e.g. #333, red"
-            onChange={val => setColor(val)}
+            value={color.primary}
+            name='primary'
+            label="Primary"
+            onChange={ handleColorUpdate }
+          />
+          <br />
+          <TextField
+            value={color.secondary}
+            name="secondary"
+            label="Secondary"
+            onChange={ handleColorUpdate }
+          />
+          <br />
+          <TextField
+            value={color.inverse}
+            name="inverse"
+            label="inverse"
+            onChange={ handleColorUpdate }
+          />
+          <br />
+          <TextField
+            value={color.white}
+            name="white"
+            label="white"
+            onChange={ handleColorUpdate }
+          />
+          <br />
+          <TextField
+            value={color.black}
+            name="black"
+            label="black"
+            onChange={ handleColorUpdate }
           />
 
           {/* <Button
@@ -94,7 +95,7 @@ function Editor(props) {
 
       <div style={{ flex: 1, position: "relative", padding: "20px" }}>
       {
-        true && 
+        false && 
         <iframe
           title="server"
           style={{ border: "none" }}
