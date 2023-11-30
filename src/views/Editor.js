@@ -94,13 +94,13 @@ function Editor(props) {
 
       <div style={{ flex: 1, position: "relative", padding: "20px" }}>
       {
-        false && 
+        true && 
         <iframe
           title="server"
           style={{ border: "none" }}
           height="100%"
           width="100%"
-          src={`http://192.168.11.113:8002/`}
+          src={`http://nodejs-production-89c8.up.railway.app/`}
         />
       }
       </div>
