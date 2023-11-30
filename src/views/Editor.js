@@ -21,7 +21,6 @@ function Editor(props) {
     }
 
     ws.onmessage = (e) => {
-      console.log(e.data);
       console.log('客户端 接受 message');
     }
 
@@ -31,8 +30,9 @@ function Editor(props) {
   const updateData = useCallback(
     () => {
       if (!socket) return;
-      console.log(2)
-      socket.send(JSON.stringify({ colorChange: color }));
+      socket.send(JSON.stringify({
+        color
+      }));
     },
     [color, socket],
   );
