@@ -5,9 +5,16 @@ import { useCallback, useEffect, useState } from "react";
 function Editor(props) {
 
   const [socket, setSocket] = useState(null);
-  const [color, setColor] = useState("");
+  const [general, setGeneral] = useState({
+    primary: '#F20000',
+    secondary: '#747475',
+    inverse: '#F7F7F7',
+    white: '#ffffff',
+    black: '#000000'
+  });
 
   useEffect(() => {
+    // const ws = new WebSocket("ws://192.168.11.113:3000/");
     const ws = new WebSocket("wss://nodejs-production-89c8.up.railway.app/");
     console.log(ws)
     ws.onopen = (e) => {
@@ -22,14 +29,33 @@ function Editor(props) {
     setSocket(ws);
   }, [])
 
-  const ioChangeColor = useCallback(
+  const updateData = useCallback(
     () => {
       if (!socket) return;
-      console.log(2)
-      socket.send(JSON.stringify({ colorChange: color }));
+      const generalString = stringifyGeneral()
+      console.log(generalString)
+      console.log('generalString')
+      socket.send(JSON.stringify({ 
+        general: generalString
+      }));
     },
-    [color, socket],
+    [general, socket],
   );
+
+  const stringifyGeneral = () => {
+    let string = ''
+    console.log(general)
+    for (let key in general) {
+      // if () 判断值不为空
+      string += `$${key}: ${general[key]};`
+    }
+    return string
+  }
+
+  const handleGeneralUpdate = (value, name) => {
+    setGeneral({...general, [name]: value})
+    console.log(general)
+  }
 
 
   return (
@@ -38,13 +64,42 @@ function Editor(props) {
       <div style={{ width: "300px", margin: "0px auto" }}>
         <Form
 
-          onSubmit={ioChangeColor}
+          onSubmit={updateData}
         >
           <br />
           <TextField
-            value={color}
+            value={general.primary}
+            name='primary'
             label="Primary"
-            onChange={val => setColor(val)}
+            onChange={ e => handleGeneralUpdate(e, 'primary') }
+          />
+          <br />
+          <TextField
+            value={general.secondary}
+            name="secondary"
+            label="Secondary"
+            onChange={ e => handleGeneralUpdate(e, 'secondary') }
+          />
+          <br />
+          <TextField
+            value={general.inverse}
+            name="inverse"
+            label="inverse"
+            onChange={ e => handleGeneralUpdate(e, 'inverse') }
+          />
+          <br />
+          <TextField
+            value={general.white}
+            name="white"
+            label="white"
+            onChange={ e => handleGeneralUpdate(e, 'white') }
+          />
+          <br />
+          <TextField
+            value={general.black}
+            name="black"
+            label="black"
+            onChange={ e => handleGeneralUpdate(e, 'black') }
           />
 
           {/* <Button
