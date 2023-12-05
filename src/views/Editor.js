@@ -43,8 +43,8 @@ function Editor(props) {
   })
 
   useEffect(() => {
-    const ws = new WebSocket("ws://192.168.11.113:3000/");
-    // const ws = new WebSocket("wss://nodejs-production-89c8.up.railway.app/");
+    // const ws = new WebSocket("ws://192.168.11.113:3000/");
+    const ws = new WebSocket("wss://nodejs-production-89c8.up.railway.app/");
     console.log(ws)
     ws.onopen = (e) => {
       console.log("socket opened");
