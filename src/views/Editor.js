@@ -1,49 +1,16 @@
 
-import { Form, TextField, Page, Badge } from "@shopify/polaris"
+import { Form, TextField } from "@shopify/polaris"
 import { useCallback, useEffect, useState } from "react"
+import { setBootstrapVariables } from './data'
 
 function Editor(props) {
 
   const [socket, setSocket] = useState(null)
-  const [general, setGeneral] = useState({
-    primary: '#F20000',
-    secondary: '#747475',
-    inverse: '#F7F7F7',
-    white: '#ffffff',
-    black: '#000000'
-  })
 
-  const [maps, setMaps] = useState({
-    spacers: {
-      unit: 'rem',
-      data: {
-        0: 0,
-        1: .25, // 4
-        2: .5, // 8
-        3: 1, //16
-        4: 1.5, //24
-        5: 2, //32
-        6: 3, //48
-        7: 4, //64
-        8: 5, //80
-        9: 6, //96
-      }
-    },
-    'grid-breakpoints': {
-      unit: 'px',
-      data: {
-        xs: 0,
-        sm: 576,  // 576px
-        md: 768,  // 768px
-        lg: 1152, // 1152px
-        xl: 1280, // 1280px
-        xxl: 1440 // 1440px
-      }
-    }
-  })
+  const [variables, setVariables] = useState(setBootstrapVariables())
 
   useEffect(() => {
-    // const ws = new WebSocket("ws://192.168.11.113:3000/");
+    // const ws = new WebSocket("ws://192.168.11.121:3000/");
     const ws = new WebSocket("wss://nodejs-production-89c8.up.railway.app/");
     console.log(ws)
     ws.onopen = (e) => {
@@ -58,70 +25,87 @@ function Editor(props) {
     setSocket(ws);
   }, [])
 
+  function generateRandomColor() {
+    var letters = '0123456789ABCDEF';
+    var color = '#';
+    for (var i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+  }
+
   const updateData = useCallback(
     () => {
       if (!socket) return;
-      const generalString = stringifyGeneral()
-      const mapsString = stringifyMaps()
-      console.log(mapsString)
+      const variablesString = stringifyVariables()
+      const customData = `$primary: ${generateRandomColor()};$spacers: (0: 0,1: 0.25rem,2: 0.75rem,3: 2rem,4: 1.5rem,5: 2rem,6: 3rem,7: 4rem,8: 5rem,9: 9rem,);`
+      console.log(variablesString)
       console.log('mapsString')
       socket.send(JSON.stringify({ 
-        general: `${generalString}${mapsString}`
+        general: variablesString.general,
+        utilities: variablesString.utilities,
+        // general: customData
       }));
     },
-    [general, maps, socket],
+    [variables, socket],
   );
 
-  const stringifyGeneral = () => {
-    let catchString = ''
-    console.log(general)
-    for (let key in general) {
-      // if () 判断值不为空
-      catchString += `$${key}: ${general[key]};`
+  const stringifyVariables = () => {
+    let catchString = {
+      general: '',
+      utilities: '',
     }
-    return catchString
-  }
-
-  const stringifyMaps = () => {
-    let catchString = ''
-    console.log(maps)
-    for (let key in maps) {
+    let valueWithUnit = ''
+    console.log(variables)
+    for (let key in variables) {
       // if () 判断值不为空
-      catchString += `$${key}: (`
-      const data = maps[key].data
+      const data = variables[key].data
+      const variablesType = variables[key].variablesType
       if (typeof data === 'object' && !Array.isArray(data)) {
-        for (let k in data) {
-          catchString += `${k}: ${data[k]}${maps[key].unit},`
+        if (variablesType === 'maps') {
+          catchString.general += `$${key}: (`
+          for (let k in data) {
+            valueWithUnit = `${data[k]}${ variables[key].unit || ''}`
+            catchString.general += `${k}: ${data[k] == 0 ? 0 : valueWithUnit},`
+          }
+          catchString.general += ');'
+        } else if (variablesType === 'utilities') {
+          console.log(123)
+          catchString.utilities += `$utilities: map-merge($utilities, (`
+          catchString.utilities += `"${key}": (`
+          catchString.utilities += `${variables[key].extraProperty},`
+          catchString.utilities += `values: (`
+          for (let k in data) {
+            valueWithUnit = `${data[k]}${ variables[key].unit || ''}`
+            catchString.utilities += `${k}: ${data[k] == 0 ? 0 : valueWithUnit},`
+          }
+          catchString.utilities += `))));`
+        } else {
+          for (let k in data) {
+            valueWithUnit = `${data[k]}${ variables[key].unit || ''}`
+            catchString.general += `$${k}: ${data[k] == 0 ? 0 : valueWithUnit};`
+          }
         }
       }
-      catchString += ');'
-      console.log(catchString)
+      
     }
     return catchString
-  }
-
-  const handleGeneralUpdate = (value, name) => {
-    setGeneral({...general, [name]: value})
-    console.log(general)
   }
 
   /**
    * @param value 输入框修改的值
-   * @param key 参数类型, eg: spacers
+   * @param key 参数类型, eg: color
    * @param name 参数某类型下面的 key 名字
   */
-  const handleMapsUpdate = (value, name, key) => {
-    console.log(name)
-    let catchs = maps[key]
+  const handleVariablesUpdate = (value, name, key) => {
+    let catchs = variables[key]
     let catchData = catchs.data
 
-    let convertValue = value / (catchs.unit === 'rem' ? 16 : 1)
+    let convertValue = catchs.unit === 'rem' ? value / 16 : value
 
     catchData = {...catchData, [name]: convertValue}
     catchs = {...catchs, data: catchData}
-    console.log(catchs)
-    console.log(catchData)
-    setMaps({...maps, [key]: catchs})
+    setVariables({...variables, [key]: catchs})
   }
 
 
@@ -133,36 +117,26 @@ function Editor(props) {
           onSubmit={updateData}
         >
           {
-            Object.keys(general).map(key =>
-              <div key={key}>
-                <br />
-
-                <TextField
-                  value={general[key]}
-                  name={key}
-                  label={key}
-                  onChange={ e => handleGeneralUpdate(e, key) }
-                />
-              </div>
-            )
-          }
-          {
-            Object.keys(maps).map(key =>
+            Object.keys(variables).map(key =>
               <div key={key}>
                 <br />
                 <br />
-                <h3>{key}</h3>
-
+                <h3>{variables[key].title}</h3>
+                <div>{variables[key].info}</div>
                 {
-                  Object.keys(maps[key].data).map(k =>
+                  Object.keys(variables[key].data)?.map(k =>
                     <div key={k}>
                       <br />
                       <TextField
-                        value={String(maps[key].data[k] * (maps[key].unit === 'rem' ? 16 : 1))}
-                        type="number"
-                        name={maps[key].data[k]}
+                        value = {
+                          variables[key].unit === 'rem' ? 
+                          String(variables[key].data[k] * 16) : 
+                          String(variables[key].data[k])
+                        }
+                        type = { variables[key].inputType }
+                        name={variables[key].data[k]}
                         label={k}
-                        onChange={ e => handleMapsUpdate(e, k, key) }
+                        onChange={ e => handleVariablesUpdate(e, k, key) }
                       />
                     </div>
                   )
@@ -170,30 +144,6 @@ function Editor(props) {
               </div>
             )
           }
-
-          {/* <br />
-          <br />
-          <h3>Grid-breakpoints</h3>
-          {
-            Object.keys(maps['grid-breakpoints']).map(key =>
-              <div key={key}>
-                <br />
-                <TextField
-                  value={String(maps['grid-breakpoints'][key])}
-                  type="number"
-                  name={maps['grid-breakpoints'][key]}
-                  label={key}
-                  onChange={ e => handleMapsUpdate(e, key, 'grid-breakpoints') }
-                />
-              </div>
-            )
-          } */}
-
-          {/* <Button
-          fullWidth
-          primary
-          onClick={ ioChangeColor }
-        >Submit</Button> */}
         </Form>
       </div>
 
