@@ -10,8 +10,14 @@ function Editor(props) {
   const [variables, setVariables] = useState(setBootstrapVariables())
 
   useEffect(() => {
+    let ws = null
+    if (window.location.href.indexOf(".vercel.app") > -1) {
+      ws = new WebSocket("wss://nodejs-production-89c8.up.railway.app/")
+    } else {
+      ws = new WebSocket("ws://192.168.11.121:3000/")
+    }
     // const ws = new WebSocket("ws://192.168.11.121:3000/");
-    const ws = new WebSocket("wss://nodejs-production-89c8.up.railway.app/");
+    // const ws = new WebSocket("wss://nodejs-production-89c8.up.railway.app/")
     console.log(ws)
     ws.onopen = (e) => {
       console.log("socket opened");
