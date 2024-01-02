@@ -210,5 +210,19 @@ export function setBootstrapVariables() {
         'header-h-sm': 3.5,
       }
     },
+    "rigig-wrapper-max-width": {
+      title: "Text max width",
+      unit: 'rem',
+      inputType: 'number',
+      variablesType: 'utilities',
+      extraProperty: 'responsive: true,property: max-width,class: mw-text',
+      data: {
+        '1': 15,
+        '2': 20,
+        '3': 25,
+        '4': 32.5,
+        '5': 50
+      }
+    }
   }
 }
